@@ -1,8 +1,24 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import SignIn from "./pages/SignIn";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import SignUp from "./pages/SignUp";
+
 function App() {
   return (
-    <>
-      <h3 className="text-10xl bg-red-500 font-bold underline">Hello</h3>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
