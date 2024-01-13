@@ -1,6 +1,5 @@
-import React from "react";
-import { Button, Label, TextInput, Alert, Spinner } from "flowbite-react";
-import { useState, useEffect } from "react";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 
@@ -9,7 +8,6 @@ export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [formValid, setFormValid] = useState(true);
 
   //Define useNavigate from ReactRouterDom for navigating user to signin page.
   const navigate = useNavigate();
@@ -18,14 +16,6 @@ export default function SignUp() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-  useEffect(() => {
-    if (formData.username && formData.password && formData.email) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [formData.username, formData.password, formData.email]);
-
   const handleSubmit = async (e) => {
     //Default is refreshing page after submit button which we dont want that.
     e.preventDefault();
@@ -52,10 +42,8 @@ export default function SignUp() {
     } catch (error) {
       setErrorMessage(error.message);
       setLoading(false);
-      setFormValid(true);
     }
   };
-
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -106,7 +94,7 @@ export default function SignUp() {
             <Button
               gradientDuoTone="purpleToPink"
               type="submit"
-              disabled={formValid}
+              disabled={loading}
             >
               {loading ? (
                 <>
