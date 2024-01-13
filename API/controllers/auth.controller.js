@@ -72,7 +72,7 @@ export const signin = async (req, res, next) => {
 
     const { password: pass, ...rest } = validUser._doc;
 
-    //Send response to front:
+    //Send response to front: (Name of cookie is access_token)
 
     res
       .status(200)
