@@ -65,7 +65,10 @@ export const signin = async (req, res, next) => {
     //Make Json web token with user id from DB,for make a cookie with that, so the browser remember user and logged in.
     //As i dont set time for storing cookie in browser,by default,cookie stored till user close the browser.
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWTSECRET);
+    const token = jwt.sign(
+      { id: validUser._id, isAdmin: validUser.isAdmin },
+      process.env.JWTSECRET
+    );
 
     //
     //Make new constants from validUser without password, because of not sending passwords from DB to browser,even hashed.
@@ -90,7 +93,10 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWTSECRET);
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWTSECRET
+      );
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -112,7 +118,10 @@ export const google = async (req, res, next) => {
         profilePicture: googlePhotoUrl,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWTSECRET);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWTSECRET
+      );
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
