@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
+  //
+  // Hooks :
   const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
   // console.log(userPosts);
   useEffect(() => {
     //
@@ -18,6 +21,9 @@ export default function DashPosts() {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -28,6 +34,24 @@ export default function DashPosts() {
     }
     //Render only when user id changes :
   }, [currentUser._id]);
+
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     // Creating a table using Tailwind Scrollbar which already installed
@@ -87,6 +111,15 @@ export default function DashPosts() {
               </Table.Body>
             ))}
           </Table>
+          {/* Create a button if user have over than 9 posts */}
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7"
+            >
+              Show more
+            </button>
+          )}
         </>
       ) : (
         <p>You have no posts yet!</p>
