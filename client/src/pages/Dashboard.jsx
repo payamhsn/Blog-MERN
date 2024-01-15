@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
+import DashPosts from "../components/DashPosts";
 
 export default function Dashboard() {
   //
@@ -30,6 +31,10 @@ export default function Dashboard() {
       {/* When tab in URL change to profile, render DashProfile : */}
 
       {tab === "profile" && <DashProfile />}
+
+      {/* posts... */}
+
+      {tab === "posts" && <DashPosts />}
     </div>
   );
 }
